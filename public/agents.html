@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Agents · Tollgate</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/pages.css">
+</head>
+<body>
+  <main>
+    <div class="page-head">
+      <div><h2 class="title">Agents</h2><p>Give each AI agent its own key and its own limits. A key pins every request to that agent, and an agent's limits can only be stricter than your global rules, never looser.</p></div>
+    </div>
+    <div class="stack">
+      <section class="panel">
+        <h2>Add an agent</h2>
+        <form id="new-agent" class="fields" autocomplete="off">
+          <label class="field">Name<input name="name" required maxlength="40" placeholder="Shopping assistant"></label>
+          <span></span>
+          <label class="field">Max per payment (optional)<input name="perTransactionLimit" type="number" min="0" step="1" placeholder="uses global rule"></label>
+          <label class="field">Daily budget (optional)<input name="dailyBudget" type="number" min="0" step="1" placeholder="uses global rule"></label>
+          <div class="wide row" style="margin-top:0"><button class="primary" type="submit">Create agent and key</button></div>
+        </form>
+        <div id="keybox" class="keybox" hidden></div>
+      </section>
+      <div id="agents" class="grid-2"></div>
+    </div>
+  </main>
+  <script type="module" src="/js/agents.js"></script>
+</body>
+</html>

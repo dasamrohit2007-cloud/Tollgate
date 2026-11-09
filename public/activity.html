@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Activity · Tollgate</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/pages.css">
+</head>
+<body>
+  <main>
+    <div class="page-head">
+      <div><h2 class="title">Activity</h2><p>Every payment request an agent has made, and exactly why Tollgate allowed, held or blocked it.</p></div>
+      <div class="actions"><button id="export" class="ghost">Download CSV</button></div>
+    </div>
+    <section class="panel">
+      <div class="filters">
+        <div class="seg" id="seg" role="group" aria-label="Filter by decision">
+          <button data-f="all" class="on">All</button><button data-f="executed">Sent</button><button data-f="pending">Waiting</button><button data-f="blocked">Blocked</button><button data-f="rejected">Rejected</button>
+        </div>
+        <input id="q" type="search" placeholder="Search merchant, agent, reason…" aria-label="Search the log">
+        <span class="muted small" id="count"></span>
+      </div>
+      <div id="grid" class="grid tall" role="region" aria-label="Audit log"></div>
+    </section>
+    <section class="panel" style="margin-top:16px">
+      <h2>Request details</h2>
+      <div id="detail" class="detail"><p class="muted">Select a row to see why it was allowed, held or blocked.</p></div>
+    </section>
+  </main>
+  <script src="/vendor/ag-grid.js"></script>
+  <script type="module" src="/js/activity.js"></script>
+</body>
+</html>

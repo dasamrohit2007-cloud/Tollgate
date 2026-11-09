@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Analytics · Tollgate</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/pages.css">
+</head>
+<body>
+  <main>
+    <div class="page-head">
+      <div><h2 class="title">Analytics</h2><p>What your agents tried to do, how much Tollgate let through, and what it stopped.</p></div>
+    </div>
+    <section class="stats" aria-label="Totals">
+      <div class="stat"><span class="label">Requests checked</span><strong id="a-req">0</strong><small id="a-req-s"></small></div>
+      <div class="stat"><span class="label">Sent to PayPal</span><strong id="a-sent">$0.00</strong><small id="a-sent-n"></small></div>
+      <div class="stat good"><span class="label">Stopped</span><strong id="a-stop">$0.00</strong><small id="a-stop-n"></small></div>
+      <div class="stat warn"><span class="label">Held for you</span><strong id="a-held">$0.00</strong><small id="a-held-n"></small></div>
+    </section>
+    <div class="stack">
+      <section class="panel">
+        <h2>Money sent vs money stopped</h2>
+        <div id="c-line"></div>
+        <div class="legend"><span><i style="background:var(--good)"></i>Sent to PayPal</span><span><i style="background:var(--bad)"></i>Stopped (blocked or rejected)</span></div>
+      </section>
+      <div class="grid-2">
+        <section class="panel"><h2>Decisions</h2><div id="c-donut" class="donut-wrap"></div></section>
+        <section class="panel"><h2>Risk scores</h2><div id="c-risk"></div></section>
+      </div>
+      <section class="panel"><h2>Why payments were stopped or held</h2><div id="c-threats"></div></section>
+      <section class="panel"><h2>By agent</h2><div class="scroll-x"><table class="t" id="t-agents"></table></div></section>
+    </div>
+  </main>
+  <script type="module" src="/js/analytics.js"></script>
+</body>
+</html>

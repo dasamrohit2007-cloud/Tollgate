@@ -1,0 +1,23 @@
+{
+  "name": "tollgate-for-paypal",
+  "version": "1.0.0",
+  "description": "A safety layer between AI agents and PayPal: policy rules, an AI risk check, human approval and an audit dashboard.",
+  "type": "module",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">=20.9"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "mcp": "node src/mcp-server.js",
+    "test": "node --test",
+    "demo": "node demo/run-demo.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "ag-grid-community": "^36.3.0",
+    "express": "^4.22.3",
+    "zod": "^4.6.7"
+  }
+}

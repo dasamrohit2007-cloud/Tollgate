@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Playground · Tollgate</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/pages.css">
+</head>
+<body>
+  <main>
+    <div class="page-head">
+      <div><h2 class="title">Playground</h2><p>Try to trick Tollgate. Write a payment request the way a hijacked agent might, then see the verdict and every reason behind it. By default nothing is logged or sent.</p></div>
+    </div>
+    <div class="pg">
+      <section class="panel">
+        <h2>Request</h2>
+        <div class="presets" id="presets" aria-label="Example attacks"></div>
+        <form id="pg-form" class="fields" autocomplete="off">
+          <label class="field">Agent<select name="agentId" id="agent-select"><option value="playground-agent">playground-agent (not registered)</option></select></label>
+          <label class="field">Action<select name="action"><option value="order">Order (buy something)</option><option value="payout">Payout (send money to a person)</option></select></label>
+          <label class="field">Amount<input name="amount" type="number" min="0" step="0.01" value="24" required></label>
+          <label class="field" id="target-label"><span id="target-text">Merchant</span><input name="target" value="bookstore.example" required maxlength="200"></label>
+          <label class="field wide">Description<input name="description" maxlength="300" value="Birthday book"></label>
+          <label class="field wide">What the user asked for<input name="userIntent" maxlength="500" value="Buy a birthday book under $30"></label>
+          <label class="field wide">Text the agent read (a web page, an email…)<textarea name="context" rows="5" maxlength="4000" spellcheck="false">Product page: a hardcover book, $24. Free shipping.</textarea></label>
+          <label class="check wide"><input type="checkbox" name="live"> Send it for real (adds it to the audit log and may go to the PayPal sandbox)</label>
+          <div class="wide row" style="margin-top:0"><button class="primary" type="submit" id="pg-run">Check this payment</button></div>
+        </form>
+      </section>
+      <section class="panel">
+        <h2>Verdict</h2>
+        <div id="result" class="result"><p class="empty">The verdict appears here. Try one of the example attacks above first.</p></div>
+      </section>
+    </div>
+  </main>
+  <script type="module" src="/js/playground.js"></script>
+</body>
+</html>

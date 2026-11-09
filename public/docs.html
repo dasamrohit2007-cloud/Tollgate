@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Integrate · Tollgate</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/pages.css">
+</head>
+<body>
+  <main>
+    <div class="page-head">
+      <div><h2 class="title">Integrate</h2><p>Put Tollgate between your agent and PayPal in a few minutes. Your agent asks Tollgate to pay; Tollgate decides; only approved payments reach the PayPal sandbox.</p></div>
+    </div>
+    <div class="docs">
+      <aside aria-label="On this page">
+        <a href="#start">Quick start</a><a href="#http">HTTP API</a><a href="#keys">Agent keys</a><a href="#mcp">MCP (Claude and others)</a><a href="#answers">Reading the answer</a><a href="#alerts">Alerts</a><a href="#safety">Safety notes</a>
+      </aside>
+      <div>
+        <section class="panel" id="start">
+          <h3>Quick start</h3>
+          <p>Run Tollgate, open the Dashboard and press <b>Run all scenarios</b> to watch six sample agents get allowed, held or blocked.</p>
+          <pre class="code" data-copy>npm install
+npm start
+# open http://localhost:3000</pre>
+          <p>With no PayPal keys it runs in <b>simulation mode</b>. To use the real PayPal <b>sandbox</b>, put your sandbox client id and secret in <code class="i">.env</code> (see <code class="i">.env.example</code>). Live PayPal is refused on purpose.</p>
+        </section>
+
+        <section class="panel" id="http">
+          <h3>HTTP API</h3>
+          <p>Any agent framework can call one endpoint. Send what the agent wants to buy, what the user asked for, and the text the agent read before deciding.</p>
+          <pre class="code" data-copy>curl -X POST http://localhost:3000/api/requests \
+  -H "content-type: application/json" \
+  -d '{
+    "agentId": "shopper",
+    "action": "order",
+    "amount": 24,
+    "merchant": "bookstore.example",
+    "description": "Birthday book",
+    "userIntent": "Buy a birthday book under $30",
+    "context": "Product page: a hardcover book, $24."
+  }'</pre>
+          <p>For a payout, use <code class="i">"action": "payout"</code> with a <code class="i">"recipient"</code> email instead of a merchant. Payouts always need your approval.</p>
+        </section>
+
+        <section class="panel" id="keys">
+          <h3>Agent keys</h3>
+          <p>Create an agent on the <a href="/agents">Agents page</a> to get a key that starts with <code class="i">tg_</code>. Send it as a bearer token. The key decides which agent the request belongs to, so an agent cannot pretend to be another one and spend its budget.</p>
+          <pre class="code" data-copy>curl -X POST http://localhost:3000/api/requests \
+  -H "authorization: Bearer tg_your_key_here" \
+  -H "content-type: application/json" \
+  -d '{"action":"order","amount":24,"merchant":"bookstore.example","userIntent":"Buy a book"}'</pre>
+          <p>Tollgate stores only a hash of each key. Rotate a key any time and the old one stops working at once. Turn on <b>Require an agent key</b> on the <a href="/rules">Rules page</a> to refuse anonymous requests.</p>
+        </section>
+
+        <section class="panel" id="mcp">
+          <h3>MCP (Claude and other MCP clients)</h3>
+          <p>Tollgate ships an MCP server, so a Claude agent gets guarded payment tools without any glue code: <code class="i">guarded_create_order</code>, <code class="i">guarded_send_payout</code>, <code class="i">get_payment_status</code> and <code class="i">get_spending_limits</code>. Add this to your MCP client config, using the full path to this folder:</p>
+          <pre class="code" data-copy>{
+  "mcpServers": {
+    "tollgate": {
+      "command": "node",
+      "args": ["/full/path/to/tollgate/src/mcp-server.js"],
+      "env": {
+        "TOLLGATE_URL": "http://localhost:3000",
+        "AGENT_ID": "my-claude-agent",
+        "TOLLGATE_API_KEY": "tg_your_key_here"
+      }
+    }
+  }
+}</pre>
+          <p><code class="i">TOLLGATE_API_KEY</code> is optional unless you require agent keys.</p>
+        </section>
+
+        <section class="panel" id="answers">
+          <h3>Reading the answer</h3>
+          <p>Every call returns a short decision the agent can act on:</p>
+          <pre class="code" data-copy>{
+  "id": "8c1f…",
+  "status": "pending",        // executed | pending | blocked | rejected | failed
+  "riskScore": 55,
+  "reasons": ["Amount is above the $50 auto-approve line."],
+  "message": "Waiting for the owner to approve. Do not retry; check this request id later."
+}</pre>
+          <p>Poll <code class="i">GET /api/requests/:id</code> to see when a held payment is approved or rejected. Agents only ever see this short answer, never the internal log.</p>
+        </section>
+
+        <section class="panel" id="alerts">
+          <h3>Alerts</h3>
+          <p>Add a webhook URL on the <a href="/rules">Rules page</a>. When a payment is held or blocked Tollgate posts JSON like this (it has both <code class="i">text</code> and <code class="i">content</code>, so Slack and Discord accept it as is):</p>
+          <pre class="code" data-copy>{
+  "event": "tollgate.held",
+  "text": "Tollgate: 75.00 USD order to bookstore.example was held for your approval. …",
+  "record": { "id": "…", "status": "pending", "agentId": "shopper", "amount": 75, "riskScore": 0, "reasons": ["…"] }
+}</pre>
+        </section>
+
+        <section class="panel" id="safety">
+          <h3>Safety notes</h3>
+          <p>Hard rules always win: a rule violation is blocked even if the AI review likes the request. The AI review can only raise a risk score, never lower it. Text from agents and web pages is always shown as plain text. Set <code class="i">ADMIN_TOKEN</code> before deploying anywhere other than your own computer, or anyone could approve payments.</p>
+        </section>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="/js/docs.js"></script>
+</body>
+</html>

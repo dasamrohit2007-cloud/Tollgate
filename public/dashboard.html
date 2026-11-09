@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Dashboard · Tollgate</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/pages.css">
+</head>
+<body>
+  <main>
+    <section class="pipeline" id="pipeline" aria-label="How every payment is checked">
+      <div class="node" data-step="0"><span class="n-num">1</span><span class="n-title">AI agent</span><span class="n-sub">asks to pay</span></div>
+      <i class="link"></i>
+      <div class="node" data-step="1"><span class="n-num">2</span><span class="n-title">Hard rules</span><span class="n-sub">limits · budget · allowlist</span></div>
+      <i class="link"></i>
+      <div class="node" data-step="2"><span class="n-num">3</span><span class="n-title">Risk check</span><span class="n-sub">injection · intent · scams</span></div>
+      <i class="link"></i>
+      <div class="node node-final" id="node-final" data-step="3"><span class="n-num">4</span><span class="n-title" id="final-title">Decision</span><span class="n-sub" id="final-sub">allow · ask · block</span></div>
+    </section>
+
+    <section class="stats" aria-label="Summary">
+      <div class="stat"><span class="label">Sent to PayPal</span><strong id="s-exec">$0.00</strong><small id="s-exec-n">0 payments</small></div>
+      <div class="stat good"><span class="label">Stopped before it was sent</span><strong id="s-block">$0.00</strong><small id="s-block-n">0 blocked</small></div>
+      <div class="stat warn"><span class="label">Waiting for you</span><strong id="s-pend">0</strong><small>needs a decision</small></div>
+      <div class="stat"><span class="label">Today's budget left</span><strong id="s-left">$0.00</strong><small id="s-left-of"></small></div>
+    </section>
+
+    <div class="layout">
+      <div class="col-main">
+        <section class="panel">
+          <h2>Needs your approval</h2>
+          <div id="approvals" class="approvals"></div>
+        </section>
+        <section class="panel">
+          <h2>Latest activity</h2>
+          <div id="recent" class="recent"></div>
+          <div class="row"><a class="btn" href="/activity">Open the full audit log</a></div>
+        </section>
+      </div>
+      <aside class="col-side">
+        <section class="panel">
+          <h2>Try an agent</h2>
+          <p class="muted small">Each button sends a payment request like an AI agent would. Watch it travel through the checks above.</p>
+          <div id="scenarios" class="scenarios"></div>
+          <div class="row">
+            <button id="run-all" class="primary">Run all scenarios</button>
+            <button id="reset" class="ghost">Clear log</button>
+          </div>
+        </section>
+        <section class="panel">
+          <h2>Think you can fool it?</h2>
+          <p class="muted small">Write your own attack and see what Tollgate does. Nothing is sent.</p>
+          <div class="row"><a class="btn primary" href="/playground">Open the playground</a></div>
+        </section>
+      </aside>
+    </div>
+  </main>
+  <script type="module" src="/js/dashboard.js"></script>
+</body>
+</html>

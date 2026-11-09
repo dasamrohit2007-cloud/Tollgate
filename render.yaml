@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: tollgate
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: PAYPAL_MODE
+        value: sandbox
+      # Leave PAYPAL_CLIENT_ID / PAYPAL_SECRET unset for simulation mode, or add sandbox keys in the Render dashboard.
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_SECRET
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      # Set a value in the Render dashboard to stop strangers approving payments on a public URL.
+      - key: ADMIN_TOKEN
+        sync: false

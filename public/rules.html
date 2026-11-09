@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Rules · Tollgate</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/pages.css">
+</head>
+<body>
+  <main>
+    <div class="page-head">
+      <div><h2 class="title">Rules</h2><p>The hard limits every agent must obey, no matter what any web page or email tells it. New requests use saved rules straight away.</p></div>
+    </div>
+    <div class="grid-2" style="align-items:start">
+      <div class="stack">
+        <section class="panel">
+          <h2>Quick presets</h2>
+          <p class="sub">Start from a setup, then fine-tune it below. Choosing one fills the form; you still press Save.</p>
+          <div class="presets" id="presets"></div>
+        </section>
+        <section class="panel">
+          <h2>Spending rules</h2>
+          <form id="policy-form" class="fields" autocomplete="off">
+            <label class="field">Block above (per payment)<input name="perTransactionLimit" type="number" min="0" step="1"></label>
+            <label class="field">Ask me above<input name="approvalThreshold" type="number" min="0" step="1"></label>
+            <label class="field">Daily budget<input name="dailyBudget" type="number" min="0" step="1"></label>
+            <label class="field">Max requests per minute<input name="maxRequestsPerMinute" type="number" min="1" step="1"></label>
+            <label class="check wide"><input name="payoutsEnabled" type="checkbox"> Allow payouts (they always need your approval)</label>
+            <label class="check wide"><input name="requireAgentKey" type="checkbox"> Require an agent key on every request (anonymous agents are refused)</label>
+            <label class="field wide">Allowed merchants (one per line)<textarea name="allowedMerchants" rows="3" spellcheck="false"></textarea></label>
+            <label class="field wide">Allowed payout recipients (one per line)<textarea name="allowedRecipients" rows="2" spellcheck="false"></textarea></label>
+            <div class="wide row" style="margin-top:0"><button class="primary" type="submit">Save rules</button></div>
+            <p id="policy-msg" class="msg wide" role="status"></p>
+          </form>
+        </section>
+      </div>
+      <div class="stack">
+        <section class="panel" id="kill">
+          <h2>Kill switch</h2>
+          <p class="sub">One click blocks every payment from every agent, including approvals of requests that are already waiting. Use it when something looks wrong.</p>
+          <div class="row" style="margin-top:0"><button id="kill-btn" class="reject">Pause all payments</button><span id="kill-state" class="pill green">Running</span></div>
+        </section>
+        <section class="panel">
+          <h2>Alerts</h2>
+          <p class="sub">Get a message when a payment is held or blocked. Works with Slack, Discord and Zapier style webhook URLs. The message never contains the text the agent read.</p>
+          <form id="alert-form" class="fields" autocomplete="off">
+            <label class="field wide">Webhook URL (https)<input name="webhookUrl" type="url" placeholder="https://hooks.slack.com/services/…" spellcheck="false"></label>
+            <label class="check"><input name="alertOnHeld" type="checkbox"> When held for approval</label>
+            <label class="check"><input name="alertOnBlocked" type="checkbox"> When blocked</label>
+            <div class="wide row" style="margin-top:0"><button class="primary" type="submit">Save alerts</button><button type="button" id="alert-test" class="ghost">Send a test alert</button><button type="button" id="alert-clear" class="ghost">Remove webhook</button></div>
+            <p id="alert-msg" class="msg wide" role="status"></p>
+          </form>
+        </section>
+        <section class="panel">
+          <h2>Danger zone</h2>
+          <p class="sub">Clears the audit log and puts the rules back to their defaults. Agents and their keys are kept.</p>
+          <div class="row" style="margin-top:0"><button id="reset" class="reject">Clear log and reset rules</button></div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="/js/rules.js"></script>
+</body>
+</html>

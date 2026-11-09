@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Tollgate · A safety layer for AI agent payments</title>
+  <meta name="description" content="Tollgate sits between AI agents and PayPal. Every payment is checked against hard rules and a risk review, then allowed, held for your approval, or blocked.">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/pages.css">
+  <link rel="stylesheet" href="/landing.css">
+</head>
+<body class="landing">
+  <header class="lnav">
+    <a class="brand" href="/" aria-label="Tollgate home"><span class="shield" id="logo"></span><b>Tollgate</b></a>
+    <nav aria-label="Sections">
+      <a href="#how">How it works</a><a href="#features">Features</a><a href="#integrate">Integrate</a><a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn primary" href="/dashboard">Open the app</a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">For PayPal · built for AI agents</p>
+        <h1>Every AI payment passes through the <span class="grad">tollgate</span>.</h1>
+        <p class="lead">AI agents can now spend money. A single hidden line on a web page can talk one into paying a stranger. Tollgate sits between your agent and PayPal, checks every payment, and only lets the safe ones through.</p>
+        <div class="cta">
+          <a class="btn primary big" href="/dashboard">Open the dashboard</a>
+          <a class="btn big" href="/playground">Try to trick it</a>
+        </div>
+        <p class="fine">Runs on the PayPal sandbox. No real money moves.</p>
+      </div>
+
+      <div class="demo" aria-label="Animation of an attack being blocked" id="demo">
+        <div class="demo-bar"><i></i><i></i><i></i><span id="demo-title">agent: email assistant</span></div>
+        <div class="demo-body">
+          <p class="d-label">The agent reads</p>
+          <p class="d-read" id="d-read"></p>
+          <p class="d-label">Then it asks to pay</p>
+          <p class="d-req" id="d-req"></p>
+          <div class="d-steps" id="d-steps">
+            <span>Hard rules</span><span>Risk check</span><span>Decision</span>
+          </div>
+          <div class="d-verdict" id="d-verdict" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="strip" aria-label="Why this matters">
+      <div><b>Text can give orders.</b><span>Agents read emails and web pages. Hidden instructions in them can steer a payment.</span></div>
+      <div><b>Mistakes add up.</b><span>A confused agent can spend a whole month's budget in a minute.</span></div>
+      <div><b>No paper trail.</b><span>When money moves, you need to know which agent did it and why it was allowed.</span></div>
+    </section>
+
+    <section id="how" class="sec">
+      <h2>How every payment is checked</h2>
+      <p class="sec-sub">Four steps, in order. Money only moves at the end, and only if every step agrees.</p>
+      <ol class="steps">
+        <li><span>1</span><h3>The agent asks</h3><p>It sends what it wants to buy, what the user asked for, and the text it read.</p></li>
+        <li><span>2</span><h3>Hard rules</h3><p>Per-payment limit, daily budget, approved merchants, request rate. Break one and it is blocked. No exceptions.</p></li>
+        <li><span>3</span><h3>Risk review</h3><p>Looks for hidden instructions, pressure, gift cards and crypto, and a purchase that does not match what the user asked. An optional Claude review can only make this stricter.</p></li>
+        <li><span>4</span><h3>Decision</h3><p><b class="g">Allow</b> and send to PayPal, <b class="y">hold</b> for your approval, or <b class="r">block</b>. All of it is logged.</p></li>
+      </ol>
+    </section>
+
+    <section id="features" class="sec">
+      <h2>Everything you need to trust an agent with money</h2>
+      <div class="feat">
+        <article><h3>Hard spending rules</h3><p>Limits, budgets, merchant and recipient allowlists, with one-click presets.</p></article>
+        <article><h3>Prompt injection check</h3><p>Catches instructions hidden in the text an agent reads, before any money moves.</p></article>
+        <article><h3>Human approval</h3><p>Large or unusual payments wait for you. Approve or reject in one click.</p></article>
+        <article><h3>Agent keys and limits</h3><p>Each agent gets its own key and stricter limits. Pause one without touching the rest.</p></article>
+        <article><h3>Kill switch</h3><p>Stop every payment from every agent instantly, including ones already waiting.</p></article>
+        <article><h3>Try-to-trick-it playground</h3><p>Write your own attack and watch exactly why Tollgate stops it. Nothing is sent.</p></article>
+        <article><h3>Audit log and analytics</h3><p>Searchable log, CSV export, and charts of money sent versus money stopped.</p></article>
+        <article><h3>Instant alerts</h3><p>A Slack or Discord message the moment a payment is held or blocked.</p></article>
+        <article><h3>MCP ready</h3><p>Claude agents get guarded payment tools through the built-in MCP server.</p></article>
+      </div>
+    </section>
+
+    <section id="integrate" class="sec split">
+      <div>
+        <h2>One call to integrate</h2>
+        <p class="sec-sub">Point your agent at Tollgate instead of PayPal. Any framework that can make an HTTP request works, and Claude agents can use the MCP server.</p>
+        <div class="cta left"><a class="btn primary" href="/docs">Read the integration guide</a></div>
+      </div>
+      <pre class="code" id="snippet"></pre>
+    </section>
+
+    <section id="faq" class="sec">
+      <h2>Questions</h2>
+      <div class="faq">
+        <details><summary>Does real money move?</summary><p>No. Tollgate only talks to the PayPal sandbox, and it refuses to run against live PayPal. With no PayPal keys it runs in simulation mode.</p></details>
+        <details><summary>Do I need an AI key?</summary><p>No. The built-in rules and risk checks work on their own. If you add an Anthropic key, a Claude review is added on top. It can raise a risk score but never lower one, and it can never override a hard rule.</p></details>
+        <details><summary>Can it stop every attack?</summary><p>No tool can promise that. Tollgate's hard limits always hold, so even a fooled agent cannot spend past them, and risky payments wait for a human. The risk review is a safety net, not a guarantee.</p></details>
+        <details><summary>What does an agent see?</summary><p>Only a short decision: allowed, waiting, or blocked, with a plain reason. It never sees the audit log or your rules, so it cannot learn how to get around them.</p></details>
+        <details><summary>Is it open source?</summary><p>Yes, under the MIT license.</p></details>
+      </div>
+    </section>
+
+    <section class="final">
+      <h2>See it stop an attack in ten seconds</h2>
+      <p>Open the dashboard and press <b>Run all scenarios</b>.</p>
+      <div class="cta"><a class="btn primary big" href="/dashboard">Open the dashboard</a></div>
+    </section>
+  </main>
+
+  <footer class="lfoot">
+    <span>Tollgate · built for the PayPal AI Hackathon 2026 · MIT license</span>
+    <span><a href="/dashboard">Dashboard</a> · <a href="/playground">Playground</a> · <a href="/docs">Docs</a></span>
+  </footer>
+  <script type="module" src="/js/landing.js"></script>
+</body>
+</html>
